@@ -7,7 +7,7 @@ LLD := $(LLVM_DIR)/bin/ld.lld
 
 .PHONY: all clean
 
-all: $(DEPLOY_DIR)/noop.so
+all: $(DEPLOY_DIR)/log.so
 
 clean:
 	rm -rf $(OUT_DIR)
@@ -37,9 +37,9 @@ $(OUT_DIR)/sbf.ld:
 	fi
 
 # Compile assembly to object file
-$(OUT_DIR)/noop.o: $(SRC_DIR)/noop.s
+$(OUT_DIR)/log.o: $(SRC_DIR)/log.s
 	mkdir -p $(OUT_DIR)
-	$(LLVM_CLANG) -target sbf -c -o $(OUT_DIR)/noop.o $(SRC_DIR)/noop.s
+	$(LLVM_CLANG) -target sbf -c -o $(OUT_DIR)/log.o $(SRC_DIR)/log.s
 
 # Linker flags
 SBF_LLD_FLAGS := \
@@ -50,6 +50,6 @@ SBF_LLD_FLAGS := \
   --entry e
 
 # Link object file to final shared object
-$(DEPLOY_DIR)/noop.so: $(OUT_DIR)/noop.o $(OUT_DIR)/sbf.ld
+$(DEPLOY_DIR)/log.so: $(OUT_DIR)/log.o $(OUT_DIR)/sbf.ld
 	mkdir -p $(DEPLOY_DIR)
-	$(LLD) $(SBF_LLD_FLAGS) -o $(DEPLOY_DIR)/noop.so $(OUT_DIR)/noop.o
+	$(LLD) $(SBF_LLD_FLAGS) -o $(DEPLOY_DIR)/log.so $(OUT_DIR)/log.o
